@@ -1,5 +1,5 @@
 import type { Handler, Route } from "./types.js";
-import net, { Socket } from "node:net";
+import net from "node:net";
 
 export function createApp() {
   //Space for registering the routes
@@ -19,6 +19,7 @@ export function createApp() {
   //for creating PATCH API
   function patch() {}
 
+  //listen function spins up a server on given prompt
   function listen(port: number) {
     const server = net.createServer((socket) => {
       socket.setEncoding("utf8");
@@ -35,7 +36,16 @@ export function createApp() {
           return route.method === method && route.path === path;
         });
 
-        if (matchedRoute) matchedRoute.handler();
+        const res = {
+          send(body: string) {
+            socket.write("HTTP/1.1 200 OK\r\n");
+            socket.write("Content-Type: text/html\r\n");
+            socket.write("\r\n");
+            socket.write(body);
+            socket.end();
+          },
+        };
+        if (matchedRoute) matchedRoute.handler(res);
       });
     });
 

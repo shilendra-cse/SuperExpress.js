@@ -2,8 +2,8 @@ import { createApp } from "./server.js";
 
 const app = createApp();
 
-app.get("/", () => {
-  console.log("home route hit");
+app.get("/", (res) => {
+  res.send("<h1>home route hit</h1>");
 });
 
 app.get("/about", () => {
