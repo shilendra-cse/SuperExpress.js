@@ -1,4 +1,4 @@
-import type { Handler, Route } from "./types.js";
+import type { Handler, Route, Response } from "./types.js";
 import net from "node:net";
 
 export function createApp() {
@@ -36,7 +36,7 @@ export function createApp() {
           return route.method === method && route.path === path;
         });
 
-        const res = {
+        const res: Response = {
           send(body: string) {
             socket.write("HTTP/1.1 200 OK\r\n");
             socket.write("Content-Type: text/html\r\n");
