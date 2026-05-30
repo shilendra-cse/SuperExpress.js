@@ -53,7 +53,11 @@ export function createApp() {
             socket.end();
           },
         };
-        if (matchedRoute) matchedRoute.handler(res);
+        if (!matchedRoute) {
+          res.status(404).send("<h1>Not Found</h1>");
+          return;
+        }
+        matchedRoute.handler(res);
       });
     });
 
