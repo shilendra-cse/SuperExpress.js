@@ -1,5 +1,6 @@
 import type { Handler, Route, Response } from "./types.js";
 import net from "node:net";
+import { STATUS_MESSAGES } from "./constants/http.js";
 
 export function createApp() {
   //Space for registering the routes
@@ -37,8 +38,15 @@ export function createApp() {
         });
 
         const res: Response = {
+          statusCode: 200,
+          headers: {},
+          status(code: number) {
+            this.statusCode = code;
+            return this;
+          },
           send(body: string) {
-            socket.write("HTTP/1.1 200 OK\r\n");
+            const statusMessage = STATUS_MESSAGES[this.statusCode] ?? "Unknown";
+            socket.write(`HTTP/1.1 ${this.statusCode} ${statusMessage}\r\n`);
             socket.write("Content-Type: text/html\r\n");
             socket.write("\r\n");
             socket.write(body);

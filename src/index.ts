@@ -3,7 +3,7 @@ import { createApp } from "./server.js";
 const app = createApp();
 
 app.get("/", (res) => {
-  res.send("<h1>home route hit</h1>");
+  res.status(201).send("<h1>home route hit</h1>");
 });
 
 app.get("/about", () => {

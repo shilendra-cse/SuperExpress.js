@@ -1,4 +1,7 @@
 export interface Response {
+  statusCode: number;
+  headers: Record<string, string>;
+  status(code: number): Response;
   send(body: string): void;
 }
 
